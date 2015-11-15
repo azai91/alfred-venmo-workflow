@@ -176,11 +176,21 @@ class Venmo:
     def set_cache_length(cls, length):
         wf.store_data('cache_length', length)
 
+    """
+
+    Accepts:
+        String, a json with the user_id, note, amount
+
+    """
     @classmethod
-    def charge_user(cls, user_id, amount, note, audience='public'):
+    def charge_user(cls, input):
         access_token = wf.get_password('venmo_access_token')
+        input = json.loads(input)
+        user_id = input['user_id']
+        note = input['note']
+        amount = input['amount']
+        audience = 'public' # todo: make input
         url = PAYMENTS_URL % (access_token, user_id, note, amount, audience)
-        print url
         body = {
             'user_id' : user_id
         }
@@ -193,7 +203,37 @@ class Venmo:
 
     @classmethod
     def show_formatting(cls, user_input):
-        pass
+        # rename
+        friend = cls.hasFriend(user_input)[0]
+        friend_name = friend['display_name']
+        rest = user_input[len(friend_name):]
+        wf.logger.error(rest)
+        rest = rest.strip().split(' ')
+        wf.logger.error(rest)
+
+        try:
+            amount = rest[0]
+        except:
+            amount = '[amount]'
+
+        try:
+            note = rest[2]
+        except:
+            note = '[note]'
+
+        isValid = amount != '[amount]' and note != '[note]'
+        title = '%s %s for %s' % (friend_name, amount, note)
+
+        payload = {
+            'user_id' : friend['id'],
+            'amount' : amount,
+            'note' : note
+        }
+
+        wf.add_item(title=title,
+            arg=json.dumps(payload),
+            valid=isValid)
+        wf.send_feedback()
 
 def add_items(links):
     # sorted(links, key=lambda link : link['lastViewedByMeDate'])
