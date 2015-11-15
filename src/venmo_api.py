@@ -208,7 +208,7 @@ class Venmo:
         friend = cls.hasFriend(user_input)[0]
         friend_name = friend['display_name']
         rest = user_input[len(friend_name):]
-        rest = rest.strip().split(' ')
+        rest = rest.strip().split(' ', 1)
 
         #refactor
         try:
