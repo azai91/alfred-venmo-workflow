@@ -233,7 +233,8 @@ class Venmo:
         payload = {
             'user_id' : friend['id'],
             'amount' : amount,
-            'note' : note
+            'note' : note,
+            'display_name' : friend['display_name']
         }
 
         wf.add_item(title=title,

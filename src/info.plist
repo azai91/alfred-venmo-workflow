@@ -6,6 +6,17 @@
 	<string>com.venmo.azai91</string>
 	<key>connections</key>
 	<dict>
+		<key>49E580D2-A7EE-4187-872D-B8E46AD094CA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0BD1ED10-3CDE-4635-87F6-78C5D03366AF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>A05E06A1-805B-42A4-862A-9A97E00F60B0</key>
 		<array>
 			<dict>
@@ -64,6 +75,31 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Venmo</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>0BD1ED10-3CDE-4635-87F6-78C5D03366AF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -85,6 +121,11 @@
 	<string></string>
 	<key>uidata</key>
 	<dict>
+		<key>0BD1ED10-3CDE-4635-87F6-78C5D03366AF</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
 		<key>49E580D2-A7EE-4187-872D-B8E46AD094CA</key>
 		<dict>
 			<key>ypos</key>

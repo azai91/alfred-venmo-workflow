@@ -1,4 +1,5 @@
 import sys
+import util
 from venmo_api import Venmo
 from workflow import Workflow
 
@@ -22,7 +23,12 @@ def main(wf):
         Venmo.set_cache_length(length)
         return sys.stdout.write("cache set to %s seconds" % str(length))
 
-    Venmo.charge_user(command)
+    try:
+        Venmo.charge_user(command)
+        sys.stdout.write(util.create_post_message(command))
+    except:
+        sys.stdout.write("Payment failed")
+
 
 if __name__ == '__main__':
     sys.exit(wf.run(main))
