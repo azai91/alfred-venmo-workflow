@@ -6,6 +6,7 @@ from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, C
 from workflow import Workflow, ICON_ACCOUNT, ICON_EJECT, ICON_BURN, ICON_CLOCK, ICON_WARNING
 import random, string
 import urllib
+import util
 
 UPDATE_SETTINGS = {'github_slug' : 'azai91/alfred-venmo-workflow'}
 HELP_URL = 'https://github.com/azai91/alfred-venmo-workflow/issues'
@@ -207,22 +208,27 @@ class Venmo:
         friend = cls.hasFriend(user_input)[0]
         friend_name = friend['display_name']
         rest = user_input[len(friend_name):]
-        wf.logger.error(rest)
         rest = rest.strip().split(' ')
-        wf.logger.error(rest)
 
+        #refactor
         try:
-            amount = rest[0]
+            amount = rest[0] if len(rest[0]) else '[amount]'
         except:
             amount = '[amount]'
 
+        if amount != '[amount]' and not util.validate_amount(amount):
+            wf.add_item(title='Please insert properly formatted amount')
+            return wf.send_feedback()
+        elif amount!= '[amount]':
+            amount = util.validate_amount(amount)
+
         try:
-            note = rest[2]
+            note = rest[1]
         except:
             note = '[note]'
 
         isValid = amount != '[amount]' and note != '[note]'
-        title = '%s %s for %s' % (friend_name, amount, note)
+        title = '%s %s %s' % (friend_name, amount, note)
 
         payload = {
             'user_id' : friend['id'],
