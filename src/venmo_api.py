@@ -117,7 +117,6 @@ class Venmo:
         except:
             friends = []
 
-        wf.logger.error(len(friends))
         if len(friends):
             cls.show_friends(friends)
         else:
