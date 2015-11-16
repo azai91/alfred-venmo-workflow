@@ -33,7 +33,6 @@ class Venmo:
         }).json()
         return response
 
-
     @classmethod
     def save_credentials(cls, credentials):
         wf.save_password('venmo_access_token', credentials['access_token'])
@@ -75,10 +74,6 @@ class Venmo:
         #     return cls.get_links()
         # else:
         return response['data']
-
-    @classmethod
-    def open_page(cls,url):
-        subprocess.call(['open',url])
 
     @classmethod
     def revoke_token(cls):

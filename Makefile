@@ -1,3 +1,3 @@
 test:
-	python -m tests.util-test
-	# python -m tests/venmo-test.py
+	# python -m tests.util_test
+	python -m tests.venmo_api_test

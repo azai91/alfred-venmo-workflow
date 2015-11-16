@@ -10,6 +10,7 @@ wf = Workflow(update_settings=UPDATE_SETTINGS, help_url=HELP_URL)
 
 def main(wf):
     command = wf.args[0]
+    wf.logger.error('beginngin')
     if command == 'logout':
         Venmo.delete_credentials()
         return sys.stdout.write("logged out")
@@ -22,9 +23,13 @@ def main(wf):
         length = int(command[3:])
         Venmo.set_cache_length(length)
         return sys.stdout.write("cache set to %s seconds" % str(length))
+    wf.logger.error('beginnd')
+
 
     try:
+        wf.logger.error('testing')
         Venmo.charge_user(command)
+        wf.logger.error(util.create_post_message(command))
         sys.stdout.write(util.create_post_message(command))
     except:
         sys.stdout.write("Payment failed")
