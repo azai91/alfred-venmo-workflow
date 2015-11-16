@@ -25,7 +25,7 @@ def main(_):
 
     if options:
         Venmo.show_options(user_input)
-    elif len(user_input) and Venmo.findFriend(user_input):
+    elif len(user_input) and len(Venmo.findFriends(user_input)) == 1:
         Venmo.show_formatting(user_input)
     elif len(user_input):
         try:

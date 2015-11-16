@@ -117,6 +117,7 @@ class Venmo:
         except:
             friends = []
 
+        wf.logger.error(len(friends))
         if len(friends):
             cls.show_friends(friends)
         else:
@@ -134,8 +135,8 @@ class Venmo:
                 title=title,
                 autocomplete='%s ' % title)
 
- @classmethod
-    def findFriend(cls, user_name):
+    @classmethod
+    def findFriends(cls, user_name):
         """
         Find friend in cached friend's list
 
@@ -152,7 +153,7 @@ class Venmo:
             cache_length = wf.stored_data('venmo_cache_length')
 
         friends = wf.cached_data('venmo_api_results', cls.get_friends, cache_length)
-        return [friend for friend in friends if user_name.startswith(friend['display_name'])]
+        return [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower())]
 
     @classmethod
     def show_options(cls, user_input):
@@ -162,13 +163,13 @@ class Venmo:
         Args:
             user_input, user inputted string in Alfred bar.
         """
-        if user_input in 'login':
+        if 'login'.startswith(user_input):
             cls.show_login()
-        if user_input in 'logout':
+        if 'logout'.startswith(user_input):
             cls.show_logout()
-        if user_input in 'clear cache':
+        if 'clear cache'.startswith(user_input):
             cls.show_clear_cache()
-        if user_input[:16] in 'set cache length':
+        if 'set cache length'.startswith(user_input[:16]):
             cls.show_set_cache_length(user_input[17:])
         wf.send_feedback()
 
