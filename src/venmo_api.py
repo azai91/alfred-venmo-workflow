@@ -104,14 +104,14 @@ class Venmo:
         # else:
         return response['data']
 
-    """
-    Display list of friends from user input
-
-    Args:
-        user_input, user inputted string in Alfred bar.
-    """
     @classmethod
     def show_filtered_friends(cls, user_input):
+        """
+        Display list of friends from user input
+
+        Args:
+            user_input, user inputted string in Alfred bar.
+        """
         try:
             friends = cls.findFriends(user_input)
         except:
@@ -128,9 +128,15 @@ class Venmo:
         wf.send_feedback()
 
     @classmethod
-    def show_friends(cls, links):
-        for index, link in enumerate(links):
-            title = link['display_name']
+    def show_friends(cls, friends):
+        """
+        Display list of friends
+
+        Args:
+
+        """
+        for index, friend in enumerate(friends):
+            title = friend['display_name']
             wf.add_item(
                 title=title,
                 autocomplete='%s ' % title)
