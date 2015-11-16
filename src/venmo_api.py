@@ -193,14 +193,14 @@ class Venmo:
         return requests.post(url, body).json()
 
     @classmethod
-    def hasFriend(cls, user_input):
+    def findFriend(cls, user_input):
         friends = wf.cached_data('venmo_api_results', cls.get_friends) #get frome
         return [friend for friend in friends if user_input.startswith(friend['display_name'])]
 
     @classmethod
     def show_formatting(cls, user_input):
         # rename
-        friend = cls.hasFriend(user_input)[0]
+        friend = cls.findFriend(user_input)[0]
         friend_name = friend['display_name']
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)
