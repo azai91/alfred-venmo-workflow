@@ -205,17 +205,13 @@ class Venmo:
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)
 
-        #refactor
-        try:
-            amount = rest[0] if len(rest[0]) else '[amount]'
-        except:
+        if not len(rest[0]):
             amount = '[amount]'
-
-        if amount != '[amount]' and not util.validate_amount(amount):
+        elif not util.validate_amount(rest[0]):
             wf.add_item(title='Please insert properly formatted amount')
             return wf.send_feedback()
-        elif amount!= '[amount]':
-            amount = util.validate_amount(amount)
+        else:
+            amount = util.validate_amount(rest[0])
 
         try:
             note = rest[1]
@@ -242,7 +238,6 @@ class Venmo:
         # sorted(links, key=lambda link : link['lastViewedByMeDate'])
         for index, link in enumerate(links):
             title = link['display_name']
-            icon = link['profile_picture_url']
             wf.add_item(
                 title=title,
                 autocomplete='%s ' % title)
