@@ -246,10 +246,16 @@ class Venmo:
 
     @classmethod
     def clear_cache(cls):
+        """
+        Clear cache
+        """
         wf.clear_cache()
 
     @classmethod
     def set_cache_length(cls, length):
+        """
+        Set cache length
+        """
         wf.store_data('venmo_cache_length', length)
 
     @classmethod
