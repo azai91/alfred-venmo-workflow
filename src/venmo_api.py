@@ -95,7 +95,7 @@ class Venmo:
             friends = []
 
         if len(friends):
-            add_items(friends)
+            cls.add_items(friends)
         else:
             wf.add_item(
                 title='No friends found',
@@ -237,11 +237,12 @@ class Venmo:
             valid=isValid)
         wf.send_feedback()
 
-def add_items(links):
-    # sorted(links, key=lambda link : link['lastViewedByMeDate'])
-    for index, link in enumerate(links):
-        title = link['display_name']
-        icon = link['profile_picture_url']
-        wf.add_item(
-            title=title,
-            autocomplete='%s ' % title)
+    @classmethod
+    def add_items(cls, links):
+        # sorted(links, key=lambda link : link['lastViewedByMeDate'])
+        for index, link in enumerate(links):
+            title = link['display_name']
+            icon = link['profile_picture_url']
+            wf.add_item(
+                title=title,
+                autocomplete='%s ' % title)
