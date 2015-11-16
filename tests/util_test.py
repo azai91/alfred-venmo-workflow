@@ -25,7 +25,7 @@ class TestUtil(unittest.TestCase):
             'amount' : '12.00',
             'note' : 'test'
         })
-        self.assertEqual(str(util.create_post_message(sample_friend)),'Test received 12.00 for test')
+        self.assertEqual(str(util.create_post_message(sample_friend)),'Test received $12.00 for test')
 
 if __name__ == '__main__':
     unittest.main()

@@ -18,4 +18,4 @@ def create_post_message(friend):
     amount = friend['amount']
     note = friend['note']
 
-    return "%s received %s for %s" % (display_name, amount, note)
+    return "%s received $%s for %s" % (display_name, amount, note)
