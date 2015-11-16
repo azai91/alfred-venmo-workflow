@@ -29,7 +29,7 @@ def main(_):
         Venmo.show_formatting(user_input)
     elif len(user_input):
         try:
-            Venmo.show_friends(user_input)
+            Venmo.show_filtered_friends(user_input)
         except:
             Venmo.show_options('login')
 
