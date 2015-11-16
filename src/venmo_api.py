@@ -112,15 +112,8 @@ class Venmo:
     """
     @classmethod
     def show_filtered_friends(cls, user_input):
-        cache_length = CACHE_MAX_AGE
-        if not wf.get_password('venmo_access_token'):
-            raise Exception('No access token found')
-        if wf.stored_data('venmo_cache_length'):
-            cache_length = wf.stored_data('venmo_cache_length')
-
-        friends = wf.cached_data('venmo_api_results', cls.get_friends, cache_length)
         try:
-            friends = wf.filter(query=user_input.lower(), items=friends, key=lambda x : x['display_name'].lower())
+            friends = cls.findFriends(user_input)
         except:
             friends = []
 
@@ -141,6 +134,25 @@ class Venmo:
                 title=title,
                 autocomplete='%s ' % title)
 
+ @classmethod
+    def findFriend(cls, user_name):
+        """
+        Find friend in cached friend's list
+
+        Args:
+            user_name, a user inputted string
+
+        Returns:
+            an array of all users whose name matches input
+        """
+        cache_length = CACHE_MAX_AGE
+        if not wf.get_password('venmo_access_token'):
+            raise Exception('No access token found')
+        if wf.stored_data('venmo_cache_length'):
+            cache_length = wf.stored_data('venmo_cache_length')
+
+        friends = wf.cached_data('venmo_api_results', cls.get_friends, cache_length)
+        return [friend for friend in friends if user_name.startswith(friend['display_name'])]
 
     @classmethod
     def show_options(cls, user_input):
@@ -250,20 +262,6 @@ class Venmo:
         audience = 'public' # todo: make input
         url = PAYMENTS_URL % (access_token, user_id, note, amount, audience)
         return requests.post(url).json()
-
-    @classmethod
-    def findFriend(cls, user_name):
-        """
-        Find friend in cached friend's list
-
-        Args:
-            user_name, a user inputted string
-
-        Returns:
-            an array of all users whose name matches input
-        """
-        friends = wf.cached_data('venmo_api_results', cls.get_friends) #get frome
-        return [friend for friend in friends if user_name.startswith(friend['display_name'])]
 
     # @classmethod
     # def complete_request(cls):
