@@ -298,7 +298,7 @@ class Venmo:
             wf.add_item(title='Please insert properly formatted amount')
             return wf.send_feedback()
         else:
-            amount = util.validate_amount(rest[0])
+            amount = util.format_amount(rest[0])
 
         try:
             note = rest[1]

@@ -27,5 +27,15 @@ class TestUtil(unittest.TestCase):
         })
         self.assertEqual(str(util.create_post_message(sample_friend)),'Test received $12.00 for test')
 
+    def test_format_amount(self):
+        self.assertEqual(util.format_amount('1'),'$1.00')
+        self.assertEqual(util.format_amount('-1'),'-$1.00')
+        self.assertEqual(util.format_amount('1.'),'$1.00')
+        self.assertEqual(util.format_amount('-1.'),'-$1.00')
+        self.assertEqual(util.format_amount('1.0'),'$1.00')
+        self.assertEqual(util.format_amount('-1.0'),'-$1.00')
+
+
+
 if __name__ == '__main__':
     unittest.main()
