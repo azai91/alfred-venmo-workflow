@@ -25,7 +25,7 @@ def main(_):
 
     if options:
         Venmo.show_options(user_input)
-    elif len(user_input) and len(Venmo.findFriends(user_input)) == 1:
+    elif len(user_input) and len(Venmo.findFriends(user_input)) == 1 and user_input.startswith(Venmo.findFriends(user_input)[0]['display_name']):
         Venmo.show_formatting(user_input)
     elif len(user_input):
         try:
