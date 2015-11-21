@@ -287,7 +287,7 @@ class Venmo:
         Args:
             user_input, a user inputted string
         """
-        friend = cls.findFriend(user_input)[0]
+        friend = cls.findFriends(user_input)[0]
         friend_name = friend['display_name']
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)

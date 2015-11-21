@@ -19,6 +19,18 @@ class TestVenmoAPI(unittest.TestCase):
     def test_save_credentials(self):
         pass
 
+    def test_show_friends(self):
+        pass
+
+    def test_show_filtered_friends(self):
+        pass
+
+    def test_find_friends(self):
+        pass
+
+    def test_show_options(self):
+        pass
+
     def setUp(self):
         # CachedData.clear()
         # Passwords
