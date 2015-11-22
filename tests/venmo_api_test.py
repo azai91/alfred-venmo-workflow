@@ -10,6 +10,8 @@ from tests.sample_data import sample_friends, sample_user
 from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID
 import json
 import logging
+import os
+import sys
 # from src.venmo_api import Venmo as Venmo_backup
 
 CachedData = {}
@@ -95,36 +97,42 @@ class TestVenmoAPI(unittest.TestCase):
             'user_id' : friend['id'],
             'amount' : '[amount]',
             'note' : '[note]',
+            'display_name' : friend['display_name']
             })
 
         self.assertEqual(Venmo.generate_payload(['1'], friend),{
             'user_id' : friend['id'],
             'amount' : '1.00',
-            'note' : '[note]'
+            'note' : '[note]',
+            'display_name' : friend['display_name']
             })
 
         self.assertEqual(Venmo.generate_payload(['-'], friend),{
             'user_id' : friend['id'],
             'amount' : '[amount]',
-            'note' : '[note]'
+            'note' : '[note]',
+            'display_name' : friend['display_name']
             })
 
         self.assertEqual(Venmo.generate_payload(['1',''], friend),{
             'user_id' : friend['id'],
             'amount' : '1.00',
-            'note' : '[note]'
+            'note' : '[note]',
+            'display_name' : friend['display_name']
             })
 
         self.assertEqual(Venmo.generate_payload(['1','t'], friend),{
             'user_id' : friend['id'],
             'amount' : '1.00',
-            'note' : 't'
+            'note' : 't',
+            'display_name' : friend['display_name']
             })
 
         self.assertEqual(Venmo.generate_payload(['1','test test'], friend),{
             'user_id' : friend['id'],
             'amount' : '1.00',
-            'note' : 'test test'
+            'note' : 'test test',
+            'display_name' : friend['display_name']
             })
 
     def test_format_title(self):
@@ -197,6 +205,9 @@ class TestVenmoAPI(unittest.TestCase):
 
 
     def setUp(self):
+        f = open(os.devnull, 'w')
+        sys.stdout = f
+
         CachedData.clear()
         StoredData.clear()
         Passwords.clear()
