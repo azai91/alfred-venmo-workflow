@@ -9,10 +9,8 @@ from src.config import TOKEN_URL
 from tests.sample_data import sample_friends, sample_user
 from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID
 import json
-import logging
 import os
 import sys
-# from src.venmo_api import Venmo as Venmo_backup
 
 CachedData = {}
 Passwords = {}
