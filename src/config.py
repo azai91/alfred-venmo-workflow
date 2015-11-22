@@ -27,3 +27,7 @@ CLEAR_CACHE = {
     'autocomplete' : '> Clear cache',
     'arg' : 'clear'
 }
+
+INVALID = {
+    'title' : 'Invalid option'
+}

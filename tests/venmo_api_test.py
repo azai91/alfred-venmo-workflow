@@ -7,7 +7,7 @@ from src.venmo_api import Workflow, Venmo, wf
 import src.httpretty as httpretty
 from src.config import TOKEN_URL
 from tests.sample_data import sample_friends, sample_user
-from src.config import FRIENDS_URL
+from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID
 import json
 # from src.venmo_api import Venmo as Venmo_backup
 
@@ -49,28 +49,35 @@ class TestVenmoAPI(unittest.TestCase):
         self.assertEquals(len(Venmo.findFriends('Nobody')), 0)
 
     def test_show_options(self):
+        Venmo.show_options('')
+        self.assertEquals(len(wf._items), 3)
+        self.assertEquals(wf._items[0].title, LOGIN['title'])
+        self.assertEquals(wf._items[1].title, LOGOUT['title'])
+        self.assertEquals(wf._items[2].title, CLEAR_CACHE['title'])
+        wf._items = []
 
         Venmo.show_options('login')
-        self.assertEquals(wf._items[0].title, 'Login')
-        self.assertEquals(wf._items[0].title, 'Login')
+        self.assertEquals(wf._items[0].title, LOGIN['title'])
+        self.assertEquals(wf._items[0].arg, LOGIN['arg'])
+        self.assertEquals(wf._items[0].autocomplete, LOGIN['autocomplete'])
         wf._items = []
 
         Venmo.show_options('logout')
-        self.assertEquals(wf._items[0].title, 'Logout')
+        self.assertEquals(wf._items[0].title, LOGOUT['title'])
+        self.assertEquals(wf._items[0].arg, LOGOUT['arg'])
+        self.assertEquals(wf._items[0].autocomplete, LOGOUT['autocomplete'])
         wf._items = []
 
-        Venmo.show_options('login')
-        self.assertEquals(wf._items[0].title, 'Login')
+        Venmo.show_options('clear cache')
+        self.assertEquals(wf._items[0].title, CLEAR_CACHE['title'])
+        self.assertEquals(wf._items[0].arg, CLEAR_CACHE['arg'])
+        self.assertEquals(wf._items[0].autocomplete, CLEAR_CACHE['autocomplete'])
         wf._items = []
 
-        Venmo.show_options('login')
-        self.assertEquals(wf._items[0].title, 'Login')
+
+        Venmo.show_options('not result')
+        self.assertEquals(wf._items[0].title, INVALID['title'])
         wf._items = []
-
-        Venmo.show_options('logout')
-
-
-
 
     @httpretty.activate
     def test_exchange_token(self):
@@ -79,7 +86,6 @@ class TestVenmoAPI(unittest.TestCase):
             content_type='application/json')
 
         self.assertIsInstance(Venmo.exchange_token('code'), dict)
-
 
     def setUp(self):
         CachedData.clear()

@@ -6,7 +6,7 @@ import requests
 import sys
 import subprocess
 import json
-from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, SET_CACHE, CLEAR_CACHE
+from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID
 from workflow import Workflow, ICON_ACCOUNT, ICON_EJECT, ICON_BURN, ICON_CLOCK, ICON_WARNING
 import random, string
 import urllib
@@ -150,7 +150,7 @@ class Venmo:
             raise Exception('No access token found')
 
         try:
-            cache_length = wf.stored_data('venmo_cache_length')
+            cache_length = wf.stored_data('venmo_cache_length') if wf.stored_data('venmo_cache_length') else cache_length
         except:
             pass
 
@@ -171,6 +171,10 @@ class Venmo:
             cls.show_logout()
         if 'clear cache'.startswith(user_input):
             cls.show_clear_cache()
+
+        if len(wf._items) == 0:
+            cls.show_invalid_option()
+
         wf.send_feedback()
 
     @classmethod
@@ -205,6 +209,14 @@ class Venmo:
             autocomplete=CLEAR_CACHE['autocomplete'],
             icon=ICON_BURN,
             valid=True)
+
+    @classmethod
+    def show_invalid_option(cls):
+        """
+        Display invalid option
+        """
+        wf.add_item(title=INVALID['title'],
+            icon=ICON_WARNING)
 
     @classmethod
     def add_update(cls):
