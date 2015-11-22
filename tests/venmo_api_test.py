@@ -3,7 +3,9 @@ Unit tests for Venmo API
 """
 
 import unittest
-import src.venmo_api as venmo_api
+from src.venmo_api import Workflow, Venmo
+import src.httpretty as httpretty
+from src.config import TOKEN_URL
 # from src.venmo_api import Venmo as Venmo_backup
 
 CachedData = {}
@@ -12,7 +14,7 @@ StoreData = {}
 
 class TestVenmoAPI(unittest.TestCase):
     def test_get_friends(self):
-        friends = venmo_api.Venmo.get_friends()
+        friends = Venmo.get_friends()
         self.assertTrue(isinstance(friends, list))
 
 
@@ -31,23 +33,32 @@ class TestVenmoAPI(unittest.TestCase):
     def test_show_options(self):
         pass
 
-    def setUp(self):
-        # CachedData.clear()
-        # Passwords
+    @httpretty.activate
+    def test_exchange_token(self):
+        httpretty.register_uri(httpretty.POST, TOKEN_URL,
+            body='{"access_token" : "string", "user" : {"username": "test"}}',
+            content_type="application/json")
 
-        # replaces cache
-        def cached_data(self, key, max_age=None):
-            return CachedData.get(key)
-        venmo_api.Workflow.cached_data = cached_data
+        self.assertIsInstance(Venmo.exchange_token('code'), dict)
 
-        def get_password(self, key):
-            return Passwords.get(key)
-        venmo_api.Workflow.get_password = get_password
 
-        def delete_password(self, key):
-            if key in Passwords:
-                del Passwords[key]
-        venmo_api.Workflow.delete_password = delete_password
+    # def setUp(self):
+    #     # CachedData.clear()
+    #     # Passwords
+
+    #     # replaces cache
+    #     def cached_data(self, key, max_age=None):
+    #         return CachedData.get(key)
+    #     venmo_api.Workflow.cached_data = cached_data
+
+    #     def get_password(self, key):
+    #         return Passwords.get(key)
+    #     venmo_api.Workflow.get_password = get_password
+
+    #     def delete_password(self, key):
+    #         if key in Passwords:
+    #             del Passwords[key]
+    #     venmo_api.Workflow.delete_password = delete_password
 
         # def store_data(self, )
 

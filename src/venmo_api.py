@@ -35,7 +35,7 @@ class Venmo:
         subprocess.Popen(['nohup','python','./server.py'])
 
     @classmethod
-    def exchange_tokens(cls, code):
+    def exchange_token(cls, code):
         """
         Exchanges code for access_token
 

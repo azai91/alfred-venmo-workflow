@@ -8,7 +8,7 @@ class HandlerClass(BaseHTTPServer.BaseHTTPRequestHandler):
     try:
       ##TODO, compare state, better parser to  check params
       code = urlparse.urlparse(s.path)[4].split('=')[1]
-      credentials = Venmo.exchange_tokens(code)
+      credentials = Venmo.exchange_token(code)
       Venmo.save_credentials(credentials)
 
       s.wfile.write('Your code has been saved in Alfred')
