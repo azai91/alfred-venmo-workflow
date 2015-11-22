@@ -6,7 +6,8 @@ import unittest
 import sys
 from src.config import LOGIN, LOGOUT, INVALID, CLEAR_CACHE
 
-from src.venmo import main, wf
+from src.venmo import main
+from src.venmo_api import wf
 
 class TestVenmo(unittest.TestCase):
 

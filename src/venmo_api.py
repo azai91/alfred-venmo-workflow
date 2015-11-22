@@ -118,10 +118,10 @@ class Venmo:
             user_input, user inputted string in Alfred bar.
         """
 
-        try:
-            friends = cls.findFriends(user_input)
+        friends = cls.findFriends(user_input)
+        if len(friends):
             cls.show_friends(friends)
-        except:
+        else:
             wf.add_item(
                 title='No friends found',
                 icon=ICON_WARNING)
@@ -354,5 +354,5 @@ class Venmo:
             'user_id' : friend['id'],
             'amount' : amount,
             'note' : note,
-            'display_name' : friend['display_name']
+            'display_name' : friend['display_name'] # for printing out name in push notification
         }
