@@ -9,7 +9,6 @@ import src.httpretty as httpretty
 from src.config import TOKEN_URL
 import src.requests as requests
 import time
-# from src.venmo_api import Venmo as Venmo_backup
 
 CachedData = {}
 Passwords = {}
