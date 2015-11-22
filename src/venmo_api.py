@@ -300,7 +300,7 @@ class Venmo:
 
         payload = {
             'user_id' : friend['id'],
-            'amount' : amount,
+            'amount' : float(util.validate_amount(rest[0])),
             'note' : note,
             'display_name' : friend['display_name']
         }
