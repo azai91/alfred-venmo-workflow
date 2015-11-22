@@ -118,11 +118,11 @@ class TestVenmoAPI(unittest.TestCase):
         wf._items = []
 
         Venmo.show_formatting('Andrew Kortina 1 food')
-        self.assertEquals(wf._items[0].title, 'pay Andrew Kortina $1.00 food')
+        self.assertEquals(wf._items[0].title, 'pay Andrew Kortina $1.00 for food')
         wf._items = []
 
         Venmo.show_formatting('Andrew Kortina -11.0 test')
-        self.assertEquals(wf._items[0].title, 'charge Andrew Kortina $11.00 test')
+        self.assertEquals(wf._items[0].title, 'charge Andrew Kortina $11.00 for test')
         wf._items = []
 
 

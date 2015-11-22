@@ -276,6 +276,7 @@ class Venmo:
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)
         action = ''
+        for_prefix = ''
 
         if len(rest[0]) and not util.validate_amount(rest[0]):
             wf.add_item(title='Please insert properly formatted amount')
@@ -290,11 +291,12 @@ class Venmo:
 
         try:
             note = rest[1]
+            for_prefix = 'for '
         except:
             note = '[note]'
 
         isValid = amount != '[amount]' and note != '[note]'
-        title = '%s%s %s %s' % (action, friend_name, amount, note)
+        title = '%s%s %s %s%s' % (action, friend_name, amount, for_prefix, note)
 
         payload = {
             'user_id' : friend['id'],
