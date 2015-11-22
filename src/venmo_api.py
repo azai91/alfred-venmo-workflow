@@ -293,8 +293,6 @@ class Venmo:
         except:
             note = '[note]'
 
-
-
         isValid = amount != '[amount]' and note != '[note]'
         title = '%s%s %s %s' % (action, friend_name, amount, note)
 

@@ -49,6 +49,8 @@ class TestVenmoAPI(unittest.TestCase):
         self.assertEquals(len(Venmo.findFriends('Nobody')), 0)
 
     def test_show_options(self):
+        wf._items = []
+
         Venmo.show_options('')
         self.assertEquals(len(wf._items), 3)
         self.assertEquals(wf._items[0].title, LOGIN['title'])
@@ -86,6 +88,43 @@ class TestVenmoAPI(unittest.TestCase):
             content_type='application/json')
 
         self.assertIsInstance(Venmo.exchange_token('code'), dict)
+
+    @httpretty.activate
+    def test_show_formatting(self):
+        httpretty.register_uri(httpretty.GET, FRIENDS_URL % (sample_user['username'], sample_access_token),
+            body=json.dumps({"data" : sample_friends }),
+            content_type='application/json')
+
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina')
+        self.assertEquals(wf._items[0].title, 'Andrew Kortina [amount] [note]')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina ')
+        self.assertEquals(wf._items[0].title, 'Andrew Kortina [amount] [note]')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina 1')
+        self.assertEquals(wf._items[0].title, 'pay Andrew Kortina $1.00 [note]')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina -')
+        self.assertEquals(wf._items[0].title, 'Andrew Kortina [amount] [note]')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina -1')
+        self.assertEquals(wf._items[0].title, 'charge Andrew Kortina $1.00 [note]')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina 1 food')
+        self.assertEquals(wf._items[0].title, 'pay Andrew Kortina $1.00 food')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina -11.0 test')
+        self.assertEquals(wf._items[0].title, 'charge Andrew Kortina $11.00 test')
+        wf._items = []
+
 
     def setUp(self):
         CachedData.clear()
