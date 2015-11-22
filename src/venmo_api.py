@@ -24,6 +24,7 @@ class Venmo:
         """
         Opens the authorization page
         """
+
         cls.start_auth_server()
         subprocess.call(['open', AUTH_URL])
 
@@ -32,6 +33,7 @@ class Venmo:
         """
         Starts server to capture code from redirect uri
         """
+
         subprocess.Popen(['nohup','python','./server.py'])
 
     @classmethod
@@ -45,11 +47,13 @@ class Venmo:
         Returns:
             response, dict, a dictionary holding the response from the Venmo server.
         """
+
         response = requests.post(TOKEN_URL, {
             'code': code,
             'client_id' : CLIENT_ID,
             'client_secret' : CLIENT_SECRET,
         }).json()
+
         return response
 
     @classmethod
@@ -60,6 +64,7 @@ class Venmo:
         Args:
             credentials, dict, a dictionary holding the acceess token, refresh token, and user information.
         """
+
         wf.save_password('venmo_access_token', credentials['access_token'])
         wf.save_password('venmo_refresh_token', credentials['refresh_token'])
 
@@ -71,6 +76,7 @@ class Venmo:
         """
         Deletes venmo access_token
         """
+
         wf.delete_password('venmo_access_token')
         wf.delete_password('venmo_refresh_token')
 
@@ -79,6 +85,7 @@ class Venmo:
         """
         Refreshes tokens
         """
+
         refresh_token = wf.get_password('venmo_refresh_token')
         response = requests.post(TOKEN_URL, {
             'client_id' : CLIENT_ID,
@@ -222,6 +229,7 @@ class Venmo:
         """
         Display invalid option
         """
+
         wf.add_item(title=INVALID['title'],
             icon=ICON_WARNING)
 
@@ -230,6 +238,7 @@ class Venmo:
         """
         Display update option
         """
+
         wf.add_item(
             'New version available!',
             'Action this item to install the update',
@@ -240,6 +249,7 @@ class Venmo:
         """
         Clear cache
         """
+
         wf.clear_cache()
 
     @classmethod
@@ -247,16 +257,18 @@ class Venmo:
         """
         Set cache length
         """
+
         wf.store_data('venmo_cache_length', length)
 
     @classmethod
-    def charge_user(cls, user):
+    def complete_transaction(cls, user):
         """
-        Charges user
+        Sends payment request to venmo server
 
-        Accepts:
-            user, a json string with the user_id, note, amount
+        Args:
+            user, a json string with the user_id, amout, note
         """
+
         access_token = wf.get_password('venmo_access_token')
         user = json.loads(user)
         user_id = user['user_id']
@@ -265,10 +277,6 @@ class Venmo:
         audience = 'public' # todo: make input
         url = PAYMENTS_URL % (access_token, user_id, note, amount, audience)
         return requests.post(url).json()
-
-    # @classmethod
-    # def complete_request(cls):
-
 
     @classmethod
     def show_formatting(cls, user_input):
