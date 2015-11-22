@@ -7,7 +7,7 @@ import sys
 import subprocess
 import json
 from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID
-from workflow import Workflow, ICON_ACCOUNT, ICON_EJECT, ICON_BURN, ICON_CLOCK, ICON_WARNING
+from workflow import Workflow, ICON_WARNING
 import random, string
 import urllib
 import util
@@ -110,6 +110,7 @@ class Venmo:
         Args:
             user_input, user inputted string in Alfred bar.
         """
+
         try:
             friends = cls.findFriends(user_input)
             cls.show_friends(friends)
@@ -128,6 +129,7 @@ class Venmo:
         Args:
 
         """
+
         for index, friend in enumerate(friends):
             title = friend['display_name']
             wf.add_item(
@@ -145,6 +147,7 @@ class Venmo:
         Returns:
             an array of all users whose name matches input
         """
+
         cache_length = CACHE_MAX_AGE
         if not wf.get_password('venmo_access_token'):
             raise Exception('No access token found')
@@ -165,6 +168,7 @@ class Venmo:
         Args:
             user_input, user inputted string in Alfred bar.
         """
+
         if 'login'.startswith(user_input):
             cls.show_login()
         if 'logout'.startswith(user_input):
@@ -182,9 +186,10 @@ class Venmo:
         """
         Display login option
         """
+
         wf.add_item(title=LOGIN['title'],
             arg=LOGIN['arg'],
-            icon=ICON_ACCOUNT,
+            icon=LOGIN['icon'],
             autocomplete=LOGIN['autocomplete'],
             valid=True)
 
@@ -193,10 +198,11 @@ class Venmo:
         """
         Display logout option
         """
+
         wf.add_item(title=LOGOUT['title'],
             arg=LOGOUT['arg'],
             autocomplete=LOGOUT['autocomplete'],
-            icon=ICON_EJECT,
+            icon=LOGOUT['icon'],
             valid=True)
 
     @classmethod
@@ -204,10 +210,11 @@ class Venmo:
         """
         Display clear cache option
         """
+
         wf.add_item(title=CLEAR_CACHE['title'],
             arg=CLEAR_CACHE['arg'],
             autocomplete=CLEAR_CACHE['autocomplete'],
-            icon=ICON_BURN,
+            icon=CLEAR_CACHE['icon'],
             valid=True)
 
     @classmethod

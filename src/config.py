@@ -1,3 +1,5 @@
+from workflow import ICON_ACCOUNT, ICON_EJECT, ICON_WARNING, ICON_SYNC
+
 CLIENT_ID = '3162'
 CLIENT_SECRET = 'h2EHtHaSGPX8dDxcVvJfFUsrNm8Jr63p'
 SCOPE = 'make_payments access_friends'
@@ -9,25 +11,28 @@ TOKEN_URL = 'https://api.venmo.com/v1/oauth/access_token'
 FRIENDS_URL = 'https://api.venmo.com/v1/users/%s/friends?access_token=%s&limit=1000' # need to change limit
 PAYMENTS_URL = 'https://api.venmo.com/v1/payments?access_token=%s&user_id=%s&note=%s&amount=%s&audience=%s'
 
-
 LOGIN = {
     'title' : 'Login',
     'autocomplete' : '> Login',
-    'arg' : 'login'
+    'arg' : 'login',
+    'icon' : ICON_ACCOUNT
 }
 
 LOGOUT = {
     'title' : 'Logout',
     'autocomplete' : '> Logout',
-    'arg' : 'logout'
+    'arg' : 'logout',
+    'icon' : ICON_EJECT
 }
 
 CLEAR_CACHE = {
     'title' : 'Clear cache',
     'autocomplete' : '> Clear cache',
-    'arg' : 'clear'
+    'arg' : 'clear',
+    'icon' : ICON_SYNC
 }
 
 INVALID = {
-    'title' : 'Invalid option'
+    'title' : 'Invalid option',
+    'icon' : ICON_WARNING
 }
