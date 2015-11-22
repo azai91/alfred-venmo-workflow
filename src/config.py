@@ -8,3 +8,22 @@ AUTH_URL= 'https://api.venmo.com/v1/oauth/authorize?client_id=%s&scope=%s&respon
 TOKEN_URL = 'https://api.venmo.com/v1/oauth/access_token'
 FRIENDS_URL = 'https://api.venmo.com/v1/users/%s/friends?access_token=%s&limit=1000' # need to change limit
 PAYMENTS_URL = 'https://api.venmo.com/v1/payments?access_token=%s&user_id=%s&note=%s&amount=%s&audience=%s'
+
+
+LOGIN = {
+    'title' : 'Login',
+    'autocomplete' : '> Login',
+    'arg' : 'login'
+}
+
+LOGOUT = {
+    'title' : 'Logout',
+    'autocomplete' : '> Logout',
+    'arg' : 'logout'
+}
+
+CLEAR_CACHE = {
+    'title' : 'Clear cache',
+    'autocomplete' : '> Clear cache',
+    'arg' : 'clear'
+}

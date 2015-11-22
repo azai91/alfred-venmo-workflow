@@ -15,17 +15,16 @@ CachedData = {}
 Passwords = {}
 StoredData = {}
 
+sample_access_token = 'test'
+
+
 class TestVenmoAPI(unittest.TestCase):
 
     @httpretty.activate
     def test_get_friends(self):
-        sample_access_token = 'test'
-        wf.save_password('venmo_access_token', sample_access_token)
-        wf.store_data('venmo_user', sample_user)
         httpretty.register_uri(httpretty.GET, FRIENDS_URL % (sample_user['username'], sample_access_token),
             body=json.dumps({"data" : sample_friends }),
             content_type='application/json')
-
         friends = Venmo.get_friends()
         self.assertTrue(isinstance(friends, list))
 
@@ -41,12 +40,37 @@ class TestVenmoAPI(unittest.TestCase):
 
     @httpretty.activate
     def test_find_friends(self):
-        # httpretty.register_uri()
+        httpretty.register_uri(httpretty.GET, FRIENDS_URL % (sample_user['username'], sample_access_token),
+            body=json.dumps({"data" : sample_friends }),
+            content_type='application/json')
 
-        Venmo.findFriends
+        self.assertEquals(len(Venmo.findFriends('And')), 2)
+        self.assertEquals(len(Venmo.findFriends('Andrew Staub')), 1)
+        self.assertEquals(len(Venmo.findFriends('Nobody')), 0)
 
     def test_show_options(self):
-        pass
+
+        Venmo.show_options('login')
+        self.assertEquals(wf._items[0].title, 'Login')
+        self.assertEquals(wf._items[0].title, 'Login')
+        wf._items = []
+
+        Venmo.show_options('logout')
+        self.assertEquals(wf._items[0].title, 'Logout')
+        wf._items = []
+
+        Venmo.show_options('login')
+        self.assertEquals(wf._items[0].title, 'Login')
+        wf._items = []
+
+        Venmo.show_options('login')
+        self.assertEquals(wf._items[0].title, 'Login')
+        wf._items = []
+
+        Venmo.show_options('logout')
+
+
+
 
     @httpretty.activate
     def test_exchange_token(self):
@@ -57,15 +81,14 @@ class TestVenmoAPI(unittest.TestCase):
         self.assertIsInstance(Venmo.exchange_token('code'), dict)
 
 
-
-
     def setUp(self):
         CachedData.clear()
         StoredData.clear()
         Passwords.clear()
 
         # replaces cache
-        def cached_data(key, max_age=None):
+        def cached_data(key, callback, max_age=None):
+            CachedData[key] = callback()
             return CachedData.get(key)
         wf.cached_data = cached_data
 
@@ -90,7 +113,8 @@ class TestVenmoAPI(unittest.TestCase):
                 del Passwords[key]
         wf.delete_password = delete_password
 
-        # def store_data(self, )
+        wf.save_password('venmo_access_token', sample_access_token)
+        wf.store_data('venmo_user', sample_user)
 
 if __name__ == '__main__':
     unittest.main()
