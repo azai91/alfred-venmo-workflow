@@ -301,6 +301,15 @@ class Venmo:
     @classmethod
     def format_title(cls, payload, friend):
         """
+        Creates a string that will be printed in the workflow
+
+        Args:
+            payload, a dictonary contains information about transaction
+            friend, a dictionary containing information about friend
+
+        Returns:
+            a string that will be displayed in workflow
+
         """
 
         friend_name = friend['display_name']
@@ -314,6 +323,19 @@ class Venmo:
     @classmethod
     def generate_payload(cls, user_input, friend):
         """
+        Generate dictionary that contains information about transaction
+
+        Args:
+            user_input, a list containing user inputted amount and note
+                Ex:
+                    ['1']
+                    ['1.0', 'hi']
+
+            friend, a dictionary with information about friend
+
+        Returns:
+            a dictionary containing properties related to transaction
+
         """
 
         amount = util.validate_amount(user_input[0]) or '[amount]'
