@@ -210,8 +210,6 @@ class TestVenmoAPI(unittest.TestCase):
         StoredData.clear()
         Passwords.clear()
 
-        logging.disable(logging.CRITICAL)
-
         # replaces cache
         def cached_data(key, callback, max_age=None):
             CachedData[key] = callback()
