@@ -23,7 +23,6 @@ def main(wf):
         Venmo.set_cache_length(length)
         return sys.stdout.write("cache set to %s seconds" % str(length))
 
-        sys.stdout.write(command)
     try:
         Venmo.complete_transaction(command)
         sys.stdout.write(util.create_post_message(command))

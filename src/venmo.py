@@ -23,15 +23,15 @@ def main(_):
     except:
         user_input = wf.args[0]
 
-    if options:
-        Venmo.show_options(user_input)
-    elif len(user_input) and len(Venmo.findFriends(user_input)) == 1 and user_input.startswith(Venmo.findFriends(user_input)[0]['display_name']):
-        Venmo.show_formatting(user_input)
-    elif len(user_input):
-        try:
+    try:
+        if options:
+            Venmo.show_options(user_input)
+        elif len(user_input) and len(Venmo.findFriends(user_input)) == 1 and user_input.startswith(Venmo.findFriends(user_input)[0]['display_name']):
+            Venmo.show_formatting(user_input)
+        elif len(user_input):
             Venmo.show_filtered_friends(user_input)
-        except:
-            Venmo.show_options('login')
+    except:
+        Venmo.show_options('login')
 
     return 0
 

@@ -266,17 +266,14 @@ class Venmo:
         Sends payment request to venmo server
 
         Args:
-            user, a json string with the user_id, amout, note
+            user, a json string with the user_id, amount, note
         """
 
         access_token = wf.get_password('venmo_access_token')
         user = json.loads(user)
-        user_id = user['user_id']
-        note = user['note']
-        amount = user['amount']
         audience = 'public' # todo: make input
-        url = PAYMENTS_URL % (access_token, user_id, note, amount, audience)
-        return requests.post(url).json()
+        url = PAYMENTS_URL % (access_token, user['user_id'], user['note'], user['amount'], audience)
+        return requests.post(url)
 
     @classmethod
     def show_formatting(cls, user_input):
@@ -357,4 +354,5 @@ class Venmo:
             'user_id' : friend['id'],
             'amount' : amount,
             'note' : note,
+            'display_name' : friend['display_name']
         }
