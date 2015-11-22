@@ -176,11 +176,11 @@ class Venmo:
             user_input, user inputted string in Alfred bar.
         """
 
-        if 'login'.startswith(user_input):
+        if 'login'.startswith(user_input.lower()):
             cls.show_login()
-        if 'logout'.startswith(user_input):
+        if 'logout'.startswith(user_input.lower()):
             cls.show_logout()
-        if 'clear cache'.startswith(user_input):
+        if 'clear cache'.startswith(user_input.lower()):
             cls.show_clear_cache()
 
         if len(wf._items) == 0:
