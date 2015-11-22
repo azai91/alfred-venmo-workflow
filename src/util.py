@@ -3,8 +3,6 @@ import json
 def validate_amount(amount):
     # if '.' in amount and more stuff after period:
     #     return False
-    if amount == '-':
-        return '0'
     try:
         return '{:.2f}'.format(float(amount))
     except:
@@ -17,10 +15,14 @@ def create_post_message(friend):
         pass
 
     display_name = friend['display_name']
-    amount = friend['amount']
+
+    # removes negative sign
+    amount = friend['amount'] if not friend['amount'][0].startswith('-') else friend['amount'][1:]
+    action = 'received' if not friend['amount'].startswith('-') else 'was charged'
+
     note = friend['note']
 
-    return "%s received $%s for %s" % (display_name, amount, note)
+    return "%s %s $%s for %s" % (display_name, action, amount, note)
 
 def format_amount(amount):
     """

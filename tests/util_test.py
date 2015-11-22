@@ -29,6 +29,13 @@ class TestUtil(unittest.TestCase):
         })
         self.assertEqual(str(util.create_post_message(sample_friend)),'Test received $12.00 for test')
 
+        sample_friend = json.dumps({
+            'display_name' : 'Test',
+            'amount' : '-12.00',
+            'note' : 'test'
+        })
+        self.assertEqual(str(util.create_post_message(sample_friend)),'Test was charged $12.00 for test')
+
     def test_format_amount(self):
         self.assertEqual(util.format_amount('1'),'$1.00')
         self.assertEqual(util.format_amount('-1'),'$1.00')

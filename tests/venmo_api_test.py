@@ -9,6 +9,7 @@ from src.config import TOKEN_URL
 from tests.sample_data import sample_friends, sample_user
 from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID
 import json
+import logging
 # from src.venmo_api import Venmo as Venmo_backup
 
 CachedData = {}
@@ -89,8 +90,81 @@ class TestVenmoAPI(unittest.TestCase):
 
         self.assertIsInstance(Venmo.exchange_token('code'), dict)
 
+    def test_generate_payload(self):
+
+        # must be first friend
+        friend = sample_friends[0]
+
+        self.assertEqual(Venmo.generate_payload([''], friend),{
+            'user_id' : friend['id'],
+            'amount' : '[amount]',
+            'note' : '[note]',
+            })
+
+        self.assertEqual(Venmo.generate_payload(['1'], friend),{
+            'user_id' : friend['id'],
+            'amount' : '1.00',
+            'note' : '[note]'
+            })
+
+        self.assertEqual(Venmo.generate_payload(['-'], friend),{
+            'user_id' : friend['id'],
+            'amount' : '[amount]',
+            'note' : '[note]'
+            })
+
+        self.assertEqual(Venmo.generate_payload(['1',''], friend),{
+            'user_id' : friend['id'],
+            'amount' : '1.00',
+            'note' : '[note]'
+            })
+
+        self.assertEqual(Venmo.generate_payload(['1','t'], friend),{
+            'user_id' : friend['id'],
+            'amount' : '1.00',
+            'note' : 't'
+            })
+
+        self.assertEqual(Venmo.generate_payload(['1','test test'], friend),{
+            'user_id' : friend['id'],
+            'amount' : '1.00',
+            'note' : 'test test'
+            })
+
+    def test_format_title(self):
+        # must be first friend
+        friend = sample_friends[0]
+
+        payload = {
+            'user_id' : friend['id'],
+            'amount' : '[amount]',
+            'note' : '[note]',
+            }
+        self.assertEqual(Venmo.format_title(payload, friend), '%s [amount] [note]' % friend['display_name'])
+
+        payload = {
+            'user_id' : friend['id'],
+            'amount' : '1.00',
+            'note' : '[note]',
+            }
+        self.assertEqual(Venmo.format_title(payload, friend), 'pay %s $1.00 [note]' % friend['display_name'])
+
+        payload = {
+            'user_id' : friend['id'],
+            'amount' : '-1.00',
+            'note' : '[note]',
+            }
+        self.assertEqual(Venmo.format_title(payload, friend), 'charge %s $1.00 [note]' % friend['display_name'])
+
+        payload = {
+            'user_id' : friend['id'],
+            'amount' : '-1.00',
+            'note' : 't',
+            }
+        self.assertEqual(Venmo.format_title(payload, friend), 'charge %s $1.00 for t' % friend['display_name'])
+
     @httpretty.activate
-    def test_show_formatting(self):
+    def stest_show_formatting(self):
         httpretty.register_uri(httpretty.GET, FRIENDS_URL % (sample_user['username'], sample_access_token),
             body=json.dumps({"data" : sample_friends }),
             content_type='application/json')
@@ -130,6 +204,8 @@ class TestVenmoAPI(unittest.TestCase):
         CachedData.clear()
         StoredData.clear()
         Passwords.clear()
+
+        logging.disable(logging.CRITICAL)
 
         # replaces cache
         def cached_data(key, callback, max_age=None):

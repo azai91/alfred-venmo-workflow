@@ -271,41 +271,53 @@ class Venmo:
         Args:
             user_input, a user inputted string
         """
+
+        #removes username from user input
         friend = cls.findFriends(user_input)[0]
         friend_name = friend['display_name']
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)
-        action = ''
-        for_prefix = ''
 
-        if len(rest[0]) and not util.validate_amount(rest[0]):
+        if len(rest[0]) and rest[0] != '-' and not util.validate_amount(rest[0]):
             wf.add_item(title='Please insert properly formatted amount')
             return wf.send_feedback()
 
-        try:
-            wf.logger.error(rest[0])
-            action = 'pay ' if float(rest[0]) > 0 else 'charge ' if float(rest[0]) < 0 else ''
-            amount = util.format_amount(rest[0])
-        except:
-            amount = '[amount]'
-
-        try:
-            note = rest[1]
-            for_prefix = 'for '
-        except:
-            note = '[note]'
-
-        isValid = amount != '[amount]' and note != '[note]'
-        title = '%s%s %s %s%s' % (action, friend_name, amount, for_prefix, note)
-
-        payload = {
-            'user_id' : friend['id'],
-            'amount' : float(util.validate_amount(rest[0])),
-            'note' : note,
-            'display_name' : friend['display_name']
-        }
+        payload = cls.generate_payload(rest, friend)
+        title = cls.format_title(payload, friend)
+        isValid = payload['amount'] != '[amount]' and payload['note'] != '[note]'
 
         wf.add_item(title=title,
             arg=json.dumps(payload),
             valid=isValid)
         wf.send_feedback()
+
+    @classmethod
+    def format_title(cls, payload, friend):
+        """
+        """
+
+        friend_name = friend['display_name']
+        for_prefix = 'for ' if payload['note'] != '[note]' else ''
+        action = 'charge ' if payload['amount'].startswith('-') else 'pay ' if payload['amount'] != '[amount]' else ''
+        amount = '$%s' % payload['amount'][1:] if payload['amount'].startswith('-') else '$%s' % payload['amount'] if payload['amount'] != '[amount]' else payload['amount']
+
+        title = '%s%s %s %s%s' % (action, friend_name, amount, for_prefix, payload['note'])
+        return title
+
+    @classmethod
+    def generate_payload(cls, user_input, friend):
+        """
+        """
+
+        amount = util.validate_amount(user_input[0]) or '[amount]'
+
+        try:
+            note = user_input[1] or '[note]'
+        except:
+            note = '[note]'
+
+        return {
+            'user_id' : friend['id'],
+            'amount' : amount,
+            'note' : note,
+        }
