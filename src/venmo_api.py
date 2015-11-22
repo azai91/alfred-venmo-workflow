@@ -96,12 +96,10 @@ class Venmo:
         Returns:
             Array of user's friends
         """
+
         access_token = wf.get_password('venmo_access_token')
         user = wf.stored_data('venmo_user')
         response = requests.get(FRIENDS_URL % (user['username'], access_token)).json()
-        # if 'error' in response and cls.refresh():
-        #     return cls.get_links()
-        # else:
         return response['data']
 
     @classmethod
