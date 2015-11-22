@@ -3,6 +3,8 @@ import json
 def validate_amount(amount):
     # if '.' in amount and more stuff after period:
     #     return False
+    if amount == '-':
+        return '0'
     try:
         return '{:.2f}'.format(float(amount))
     except:
@@ -32,6 +34,6 @@ def format_amount(amount):
 
     """
 
-    amount = validate_amount(amount)
-    return '$%s' % amount if amount[0] != '-' else '-$%s' % amount[1:]
+    amount = validate_amount(abs(float(amount)))
+    return '$%s' % amount
 

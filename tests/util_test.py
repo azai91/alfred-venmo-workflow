@@ -14,10 +14,12 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(util.validate_amount('10.'),'10.00')
         self.assertEqual(util.validate_amount('10.0'),'10.00')
         self.assertEqual(util.validate_amount('10.00'),'10.00')
+        self.assertTrue(util.validate_amount('-'))
         self.assertFalse(util.validate_amount('f'))
         self.assertFalse(util.validate_amount('1f'))
         self.assertFalse(util.validate_amount('10.f'))
         self.assertFalse(util.validate_amount('10.0f'))
+
 
     def test_create_post_message(self):
         sample_friend = json.dumps({
@@ -29,11 +31,11 @@ class TestUtil(unittest.TestCase):
 
     def test_format_amount(self):
         self.assertEqual(util.format_amount('1'),'$1.00')
-        self.assertEqual(util.format_amount('-1'),'-$1.00')
+        self.assertEqual(util.format_amount('-1'),'$1.00')
         self.assertEqual(util.format_amount('1.'),'$1.00')
-        self.assertEqual(util.format_amount('-1.'),'-$1.00')
+        self.assertEqual(util.format_amount('-1.'),'$1.00')
         self.assertEqual(util.format_amount('1.0'),'$1.00')
-        self.assertEqual(util.format_amount('-1.0'),'-$1.00')
+        self.assertEqual(util.format_amount('-1.0'),'$1.00')
 
 
 

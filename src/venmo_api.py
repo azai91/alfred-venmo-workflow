@@ -275,22 +275,28 @@ class Venmo:
         friend_name = friend['display_name']
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)
+        action = ''
 
-        if not len(rest[0]):
-            amount = '[amount]'
-        elif not util.validate_amount(rest[0]):
+        if len(rest[0]) and not util.validate_amount(rest[0]):
             wf.add_item(title='Please insert properly formatted amount')
             return wf.send_feedback()
-        else:
+
+        try:
+            wf.logger.error(rest[0])
+            action = 'pay ' if float(rest[0]) > 0 else 'charge ' if float(rest[0]) < 0 else ''
             amount = util.format_amount(rest[0])
+        except:
+            amount = '[amount]'
 
         try:
             note = rest[1]
         except:
             note = '[note]'
 
+
+
         isValid = amount != '[amount]' and note != '[note]'
-        title = '%s %s %s' % (friend_name, amount, note)
+        title = '%s%s %s %s' % (action, friend_name, amount, note)
 
         payload = {
             'user_id' : friend['id'],
