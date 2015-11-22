@@ -6,7 +6,7 @@ import requests
 import sys
 import subprocess
 import json
-from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, CACHE_MAX_AGE, PAYMENTS_URL
+from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, SET_CACHE, CLEAR_CACHE
 from workflow import Workflow, ICON_ACCOUNT, ICON_EJECT, ICON_BURN, ICON_CLOCK, ICON_WARNING
 import random, string
 import urllib
@@ -112,12 +112,8 @@ class Venmo:
         """
         try:
             friends = cls.findFriends(user_input)
-        except:
-            friends = []
-
-        if len(friends):
             cls.show_friends(friends)
-        else:
+        except:
             wf.add_item(
                 title='No friends found',
                 icon=ICON_WARNING)
@@ -152,8 +148,11 @@ class Venmo:
         cache_length = CACHE_MAX_AGE
         if not wf.get_password('venmo_access_token'):
             raise Exception('No access token found')
-        if wf.stored_data('venmo_cache_length'):
+
+        try:
             cache_length = wf.stored_data('venmo_cache_length')
+        except:
+            pass
 
         friends = wf.cached_data('venmo_api_results', cls.get_friends, cache_length)
         return [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower()) or user_name.lower().startswith(friend['display_name'].lower())]
@@ -172,8 +171,6 @@ class Venmo:
             cls.show_logout()
         if 'clear cache'.startswith(user_input):
             cls.show_clear_cache()
-        if 'set cache length'.startswith(user_input[:16]):
-            cls.show_set_cache_length(user_input[17:])
         wf.send_feedback()
 
     @classmethod
@@ -181,10 +178,10 @@ class Venmo:
         """
         Display login option
         """
-        wf.add_item(title='Login',
-            arg='login',
+        wf.add_item(title=LOGIN['title'],
+            arg=LOGIN['arg'],
             icon=ICON_ACCOUNT,
-            autocomplete='> Login',
+            autocomplete=LOGIN['autocomplete'],
             valid=True)
 
     @classmethod
@@ -192,9 +189,9 @@ class Venmo:
         """
         Display logout option
         """
-        wf.add_item(title='Logout',
-            arg='logout',
-            autocomplete='> Logout',
+        wf.add_item(title=LOGOUT['title'],
+            arg=LOGOUT['arg'],
+            autocomplete=LOGOUT['autocomplete'],
             icon=ICON_EJECT,
             valid=True)
 
@@ -203,34 +200,11 @@ class Venmo:
         """
         Display clear cache option
         """
-        wf.add_item(title='Clear cache',
-            arg='clear',
-            autocomplete='> Clear cache',
+        wf.add_item(title=CLEAR_CACHE['title'],
+            arg=CLEAR_CACHE['arg'],
+            autocomplete=CLEAR_CACHE['autocomplete'],
             icon=ICON_BURN,
             valid=True)
-
-    @classmethod
-    def show_set_cache_length(cls, length):
-        """
-        Display set cache lenght option
-
-        Args:
-            length, a string with the inputted length
-        """
-        if not len(length):
-            wf.add_item(title='Set cache length [seconds]',
-                autocomplete='> Set cache length ',
-                icon=ICON_CLOCK)
-        else:
-            try:
-                int(length)
-                wf.add_item(title='Set cache length %s seconds' % length,
-                    arg='set' + length,
-                    icon=ICON_CLOCK,
-                    valid=True)
-            except:
-                wf.add_item(title='Please insert valid cache length',
-                    icon=ICON_CLOCK)
 
     @classmethod
     def add_update(cls):
