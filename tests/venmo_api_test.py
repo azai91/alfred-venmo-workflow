@@ -29,10 +29,6 @@ class TestVenmoAPI(unittest.TestCase):
         friends = Venmo.get_friends()
         self.assertTrue(isinstance(friends, list))
 
-
-    def test_save_credentials(self):
-        pass
-
     def test_show_friends(self):
         pass
 
@@ -164,7 +160,7 @@ class TestVenmoAPI(unittest.TestCase):
         self.assertEqual(Venmo.format_title(payload, friend), 'charge %s $1.00 for t' % friend['display_name'])
 
     @httpretty.activate
-    def stest_show_formatting(self):
+    def test_show_formatting(self):
         httpretty.register_uri(httpretty.GET, FRIENDS_URL % (sample_user['username'], sample_access_token),
             body=json.dumps({"data" : sample_friends }),
             content_type='application/json')

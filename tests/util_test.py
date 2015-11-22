@@ -14,7 +14,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(util.validate_amount('10.'),'10.00')
         self.assertEqual(util.validate_amount('10.0'),'10.00')
         self.assertEqual(util.validate_amount('10.00'),'10.00')
-        self.assertTrue(util.validate_amount('-'))
+        self.assertFalse(util.validate_amount('-'))
         self.assertFalse(util.validate_amount('f'))
         self.assertFalse(util.validate_amount('1f'))
         self.assertFalse(util.validate_amount('10.f'))

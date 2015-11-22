@@ -29,6 +29,9 @@ class TestVenmoAPI(unittest.TestCase):
     def setUp(self):
         subprocess.Popen(['nohup','python','./src/server.py'])
 
+        # allows server to start
+        time.sleep(0.5)
+
 
 
 
