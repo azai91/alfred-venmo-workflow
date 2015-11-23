@@ -1,21 +1,29 @@
+"""
+Server to handle redirect request
+"""
+
+# pylint: disable=relative-import, invalid-name, bare-except
+
 import BaseHTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
 from venmo_api import Venmo
 import urlparse
 
 class HandlerClass(BaseHTTPServer.BaseHTTPRequestHandler):
-    def do_GET(s):
-        s.send_response(200)
-        s.send_header("Content-type","text/html")
-        s.end_headers()
+    """Basic server class"""
+
+    def do_GET(self):
+        """Handle GET request to redirect URI"""
+
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
         try:
-            ##TODO, compare state, better parser to    check params
-            code = urlparse.urlparse(s.path)[4].split('=')[1]
+            code = urlparse.urlparse(self.path)[4].split('=')[1]
             credentials = Venmo.exchange_token(code)
             Venmo.save_credentials(credentials)
-            s.wfile.write('Your code has been saved in Alfred')
+            self.wfile.write('Your code has been saved in Alfred')
         except:
-            s.wfile.write('Error with setting code')
+            self.wfile.write('Error with setting code')
 
 ServerClass = BaseHTTPServer.HTTPServer
 Protocol = "HTTP/1.0"
