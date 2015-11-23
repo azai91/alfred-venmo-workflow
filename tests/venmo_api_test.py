@@ -6,7 +6,7 @@ Unit tests for Venmo API
 
 import unittest
 from src.venmo_api import Venmo, wf
-import src.httpretty as httpretty
+import httpretty
 from src.config import TOKEN_URL
 from tests.sample_data import sample_friends, sample_user
 from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID
