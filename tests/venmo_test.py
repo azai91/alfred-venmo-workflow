@@ -8,7 +8,6 @@ import unittest
 import sys
 from src.config import LOGIN, LOGOUT, INVALID, CLEAR_CACHE
 import os
-import sys
 from src.venmo import main
 from src.venmo_api import wf
 
