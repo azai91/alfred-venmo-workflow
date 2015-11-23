@@ -2,14 +2,14 @@
 Venmo API
 """
 
+# pylint: disable=relative-import, bare-except, invalid-name, protected-access
+
 import requests
-import sys
 import subprocess
 import json
-from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID
+from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, \
+                   CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID
 from workflow import Workflow, ICON_WARNING
-import random, string
-import urllib
 import util
 
 UPDATE_SETTINGS = {'github_slug' : 'azai91/alfred-venmo-workflow'}
@@ -17,7 +17,10 @@ HELP_URL = 'https://github.com/azai91/alfred-venmo-workflow/issues'
 
 wf = Workflow(update_settings=UPDATE_SETTINGS, help_url=HELP_URL)
 
-class Venmo:
+class Venmo(object):
+    """
+    Venmo class to access Venmo API
+    """
 
     @classmethod
     def open_auth_page(cls):
@@ -34,7 +37,7 @@ class Venmo:
         Starts server to capture code from redirect uri
         """
 
-        subprocess.Popen(['nohup','python','./server.py'])
+        subprocess.Popen(['nohup', 'python', './server.py'])
 
     @classmethod
     def exchange_token(cls, code):
@@ -62,7 +65,8 @@ class Venmo:
         Save tokens and user information from response
 
         Args:
-            credentials, dict, a dictionary holding the acceess token, refresh token, and user information.
+            credentials, dict, a dictionary holding the acceess token,
+            refresh token, and user information.
         """
 
         wf.save_password('venmo_access_token', credentials['access_token'])
@@ -137,7 +141,7 @@ class Venmo:
 
         """
 
-        for index, friend in enumerate(friends):
+        for friend in friends:
             title = friend['display_name']
             wf.add_item(
                 title=title,
@@ -160,19 +164,25 @@ class Venmo:
             raise Exception('No access token found')
 
         try:
-            cache_length = wf.stored_data('venmo_cache_length') if wf.stored_data('venmo_cache_length') else cache_length
+            cache_length = (wf.stored_data('venmo_cache_length')
+                            if wf.stored_data('venmo_cache_length') else cache_length)
         except:
             pass
 
         friends = wf.cached_data('venmo_api_results', cls.get_friends, cache_length)
-        friends = [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower()) or user_name.lower().startswith(friend['display_name'].lower())]
+        friends = [friend for friend in friends
+                   if (friend['display_name'].lower().startswith(user_name.lower())
+                       or user_name.lower().startswith(friend['display_name'].lower()))]
         if len(friends) > 0:
             return friends
         else:
-            friends = wf.cached_data('venmo_api_results_backup', cls.get_friends, 15) #backup cache for 15 seconds
+            friends = wf.cached_data('venmo_api_results_backup',
+                                     cls.get_friends, 15) #backup cache for 15 seconds
             if len(friends) > 0:
                 wf.cache_data('venmo_api_results', friends)
-            return [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower()) or user_name.lower().startswith(friend['display_name'].lower())]
+            return [friend for friend in friends
+                    if (friend['display_name'].lower().startswith(user_name.lower())
+                        or user_name.lower().startswith(friend['display_name'].lower()))]
 
 
     @classmethod
@@ -203,10 +213,10 @@ class Venmo:
         """
 
         wf.add_item(title=LOGIN['title'],
-            arg=LOGIN['arg'],
-            icon=LOGIN['icon'],
-            autocomplete=LOGIN['autocomplete'],
-            valid=True)
+                    arg=LOGIN['arg'],
+                    icon=LOGIN['icon'],
+                    autocomplete=LOGIN['autocomplete'],
+                    valid=True)
 
     @classmethod
     def show_logout(cls):
@@ -215,10 +225,10 @@ class Venmo:
         """
 
         wf.add_item(title=LOGOUT['title'],
-            arg=LOGOUT['arg'],
-            autocomplete=LOGOUT['autocomplete'],
-            icon=LOGOUT['icon'],
-            valid=True)
+                    arg=LOGOUT['arg'],
+                    autocomplete=LOGOUT['autocomplete'],
+                    icon=LOGOUT['icon'],
+                    valid=True)
 
     @classmethod
     def show_clear_cache(cls):
@@ -227,10 +237,10 @@ class Venmo:
         """
 
         wf.add_item(title=CLEAR_CACHE['title'],
-            arg=CLEAR_CACHE['arg'],
-            autocomplete=CLEAR_CACHE['autocomplete'],
-            icon=CLEAR_CACHE['icon'],
-            valid=True)
+                    arg=CLEAR_CACHE['arg'],
+                    autocomplete=CLEAR_CACHE['autocomplete'],
+                    icon=CLEAR_CACHE['icon'],
+                    valid=True)
 
     @classmethod
     def show_invalid_option(cls):
@@ -239,7 +249,7 @@ class Venmo:
         """
 
         wf.add_item(title=INVALID['title'],
-            icon=ICON_WARNING)
+                    icon=ICON_WARNING)
 
     @classmethod
     def add_update(cls):
@@ -302,68 +312,11 @@ class Venmo:
             wf.add_item(title='Please insert properly formatted amount')
             return wf.send_feedback()
 
-        payload = cls.generate_payload(rest, friend)
-        title = cls.format_title(payload, friend)
+        payload = util.generate_payload(rest, friend)
+        title = util.format_title(payload, friend)
         isValid = payload['amount'] != '[amount]' and payload['note'] != '[note]'
 
         wf.add_item(title=title,
-            arg=json.dumps(payload),
-            valid=isValid)
+                    arg=json.dumps(payload),
+                    valid=isValid)
         wf.send_feedback()
-
-    @classmethod
-    def format_title(cls, payload, friend):
-        """
-        Creates a string that will be printed in the workflow
-
-        Args:
-            payload, a dictonary contains information about transaction
-            friend, a dictionary containing information about friend
-
-        Returns:
-            a string that will be displayed in workflow
-
-        """
-
-        friend_name = friend['display_name']
-        for_prefix = 'for ' if payload['note'] != '[note]' else ''
-        action = 'charge ' if payload['amount'].startswith('-') else 'pay ' if payload['amount'] != '[amount]' else ''
-        amount = '$%s' % payload['amount'][1:] if payload['amount'].startswith('-') else '$%s' % payload['amount'] if payload['amount'] != '[amount]' else payload['amount']
-
-        title = '%s%s %s %s%s' % (action, friend_name, amount, for_prefix, payload['note'])
-        return title
-
-    @classmethod
-    def generate_payload(cls, user_input, friend):
-        """
-        Generate dictionary that contains information about transaction
-
-        Args:
-            user_input, a list containing user inputted amount and note
-                Ex:
-                    ['1']
-                    ['1.0', 'hi']
-
-            friend, a dictionary with information about friend
-
-        Returns:
-            a dictionary containing properties related to transaction
-
-        """
-
-        try:
-            amount = util.validate_amount(user_input[0])
-        except:
-            amount = '[amount]'
-
-        try:
-            note = user_input[1] or '[note]'
-        except:
-            note = '[note]'
-
-        return {
-            'user_id' : friend['id'],
-            'amount' : amount,
-            'note' : note,
-            'display_name' : friend['display_name'] # for printing out name in push notification
-        }
