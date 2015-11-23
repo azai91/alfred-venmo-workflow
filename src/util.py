@@ -4,7 +4,7 @@ Basic util library
 
 import json
 
-# pylint: disable=relative-import, invalid-name, bare-except
+# pylint: disable= bare-except
 
 def validate_amount(amount):
     """
@@ -14,7 +14,7 @@ def validate_amount(amount):
         amount, user input string
 
     Returns:
-        a string in correct format, or False if string cannot be
+        a string in correct format
 
     """
 
@@ -22,6 +22,14 @@ def validate_amount(amount):
 
 def create_post_message(friend):
     """
+    Creates message for push notification
+
+    Args:
+        friend, a json format string containing transction information
+
+    Returns:
+        a string containing message for push notification
+
     """
 
     try:

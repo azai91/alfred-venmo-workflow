@@ -350,6 +350,7 @@ class Venmo:
             a dictionary containing properties related to transaction
 
         """
+
         try:
             amount = util.validate_amount(user_input[0])
         except:
