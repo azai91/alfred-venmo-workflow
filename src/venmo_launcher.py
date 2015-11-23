@@ -1,3 +1,9 @@
+"""
+Venmo actions when item selection
+"""
+
+# pylint: disable=bare-except, relative-import, invalid-name
+
 import sys
 import util
 from venmo_api import Venmo
@@ -8,7 +14,9 @@ HELP_URL = 'https://github.com/azai91/alfred-venmo-workflow/issues'
 
 wf = Workflow(update_settings=UPDATE_SETTINGS, help_url=HELP_URL)
 
-def main(wf):
+def main(_):
+    """Act of user action"""
+
     command = wf.args[0]
     if command == 'logout':
         Venmo.delete_credentials()
