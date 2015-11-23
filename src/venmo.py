@@ -2,9 +2,10 @@
 Displays settings
 """
 
+# pylint: disable=invalid-name, bare-except, relative-import
+
 from workflow import Workflow
 from venmo_api import Venmo
-import util
 
 UPDATE_SETTINGS = {'github_slug' : 'azai91/alfred-venmo-workflow'}
 HELP_URL = 'https://github.com/azai91/alfred-venmo-workflow/issues'
@@ -12,6 +13,10 @@ HELP_URL = 'https://github.com/azai91/alfred-venmo-workflow/issues'
 wf = Workflow(update_settings=UPDATE_SETTINGS, help_url=HELP_URL)
 
 def main(_):
+    """
+    List options for user
+    """
+
     user_input = ""
     options = True if wf.args[0][0] == '>' else False
 
@@ -26,7 +31,8 @@ def main(_):
     try:
         if options:
             Venmo.show_options(user_input)
-        elif len(user_input) and len(Venmo.findFriends(user_input)) == 1 and user_input.startswith(Venmo.findFriends(user_input)[0]['display_name']):
+        elif (len(user_input) and len(Venmo.findFriends(user_input)) == 1 and
+              user_input.startswith(Venmo.findFriends(user_input)[0]['display_name'])):
             Venmo.show_formatting(user_input)
         elif len(user_input):
             Venmo.show_filtered_friends(user_input)
