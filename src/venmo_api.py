@@ -165,7 +165,15 @@ class Venmo:
             pass
 
         friends = wf.cached_data('venmo_api_results', cls.get_friends, cache_length)
-        return [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower()) or user_name.lower().startswith(friend['display_name'].lower())]
+        friends = [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower()) or user_name.lower().startswith(friend['display_name'].lower())]
+        if len(friends) > 0:
+            return friends
+        else:
+            friends = wf.cached_data('venmo_api_results_backup', cls.get_friends, 15) #backup cache for 15 seconds
+            if len(friends) > 0:
+                wf.cache_data('venmo_api_results', friends)
+            return [friend for friend in friends if friend['display_name'].lower().startswith(user_name.lower()) or user_name.lower().startswith(friend['display_name'].lower())]
+
 
     @classmethod
     def show_options(cls, user_input):
