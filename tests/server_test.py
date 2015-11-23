@@ -9,7 +9,7 @@ import time
 
 class TestServer(unittest.TestCase):
     """
-    Test the authentication server
+    Unit tests for server
     """
 
     def test_status(self):
@@ -31,8 +31,5 @@ class TestServer(unittest.TestCase):
         time.sleep(0.5)
 
 
-
-
 if __name__ == '__main__':
     unittest.main()
-
