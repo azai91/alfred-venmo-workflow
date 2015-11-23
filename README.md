@@ -9,6 +9,8 @@ This workflow allows you to easy pay or charge your friends. They keyword is "v"
 
 You have to login (```v > login```) before you can use the workflow. The login uses OAuth, so you do not need to enter your credentials.
 
+![inline](./assets/login.gif)
+
 ##Commands
 - ```v [username] [amount] [note]```
 Charges or pays a user. To pay a user insert a positive amount. The charge a user insert a **negative amount**.
