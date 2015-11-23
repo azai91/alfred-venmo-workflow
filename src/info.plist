@@ -4,6 +4,8 @@
 <dict>
 	<key>bundleid</key>
 	<string>com.venmo.azai91</string>
+	<key>category</key>
+	<string>Tools</string>
 	<key>connections</key>
 	<dict>
 		<key>49E580D2-A7EE-4187-872D-B8E46AD094CA</key>
