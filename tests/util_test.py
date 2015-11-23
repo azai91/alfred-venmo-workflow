@@ -24,11 +24,13 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(util.validate_amount('10.'), '10.00')
         self.assertEqual(util.validate_amount('10.0'), '10.00')
         self.assertEqual(util.validate_amount('10.00'), '10.00')
-        self.assertFalse(util.validate_amount('-'))
-        self.assertFalse(util.validate_amount('f'))
-        self.assertFalse(util.validate_amount('1f'))
-        self.assertFalse(util.validate_amount('10.f'))
-        self.assertFalse(util.validate_amount('10.0f'))
+
+        with self.assertRaises(ValueError):
+            util.validate_amount('-')
+            util.validate_amount('f')
+            util.validate_amount('1f')
+            util.validate_amount('10.f')
+            util.validate_amount('10.0f')
 
 
     def test_create_post_message(self):

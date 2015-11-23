@@ -1,14 +1,29 @@
+"""
+Basic util library
+"""
+
 import json
 
+# pylint: disable=relative-import, invalid-name, bare-except
+
 def validate_amount(amount):
-    # if '.' in amount and more stuff after period:
-    #     return False
-    try:
-        return '{:.2f}'.format(float(amount))
-    except:
-        return False
+    """
+    Validate user input to float format with two decimal
+
+    Args:
+        amount, user input string
+
+    Returns:
+        a string in correct format, or False if string cannot be
+
+    """
+
+    return '{:.2f}'.format(float(amount))
 
 def create_post_message(friend):
+    """
+    """
+
     try:
         friend = json.loads(friend)
     except:
