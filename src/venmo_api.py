@@ -9,7 +9,7 @@ import subprocess
 import json
 from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, \
                    CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID, INVALID_FORMAT
-from workflow import Workflow, ICON_WARNING
+from workflow import Workflow
 import util
 
 UPDATE_SETTINGS = {'github_slug' : 'azai91/alfred-venmo-workflow'}
@@ -235,7 +235,7 @@ class Venmo(object):
         """Display invalid option"""
 
         wf.add_item(title=INVALID['title'],
-                    icon=ICON_WARNING)
+                    icon=INVALID['icon'])
 
     @classmethod
     def add_update(cls):
