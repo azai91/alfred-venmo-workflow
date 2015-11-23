@@ -32,7 +32,7 @@ class TestVenmo(unittest.TestCase):
 
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '> not here']
+        sys.argv = ['venmo.py', '> not here']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, INVALID['title'])
@@ -43,7 +43,7 @@ class TestVenmo(unittest.TestCase):
     def test_login(self):
         """Test if login item is displayed"""
 
-        sys.argv = ['venmo.py.py', '> login']
+        sys.argv = ['venmo.py', '> login']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGIN['title'])
@@ -51,7 +51,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>login']
+        sys.argv = ['venmo.py', '>login']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGIN['title'])
@@ -59,7 +59,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>  login']
+        sys.argv = ['venmo.py', '>  login']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGIN['title'])
@@ -67,7 +67,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>  Login']
+        sys.argv = ['venmo.py', '>  Login']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGIN['title'])
@@ -75,7 +75,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>  LOGIN']
+        sys.argv = ['venmo.py', '>  LOGIN']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGIN['title'])
@@ -88,7 +88,7 @@ class TestVenmo(unittest.TestCase):
 
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '> logout']
+        sys.argv = ['venmo.py', '> logout']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGOUT['title'])
@@ -96,7 +96,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>logout']
+        sys.argv = ['venmo.py', '>logout']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGOUT['title'])
@@ -104,7 +104,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>  logout']
+        sys.argv = ['venmo.py', '>  logout']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGOUT['title'])
@@ -112,7 +112,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>  Logout']
+        sys.argv = ['venmo.py', '>  Logout']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGOUT['title'])
@@ -120,7 +120,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>  LOGOUT']
+        sys.argv = ['venmo.py', '>  LOGOUT']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, LOGOUT['title'])
@@ -133,7 +133,7 @@ class TestVenmo(unittest.TestCase):
 
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '> cl']
+        sys.argv = ['venmo.py', '> cl']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, CLEAR_CACHE['title'])
@@ -141,7 +141,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '> clear C']
+        sys.argv = ['venmo.py', '> clear C']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, CLEAR_CACHE['title'])
@@ -149,7 +149,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '>cl']
+        sys.argv = ['venmo.py', '>cl']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, CLEAR_CACHE['title'])
@@ -157,7 +157,7 @@ class TestVenmo(unittest.TestCase):
         self.assertTrue(wf._items[0].valid)
         wf._items = []
 
-        sys.argv = ['venmo.py.py', '> clear cache']
+        sys.argv = ['venmo.py', '> clear cache']
         main(None)
         self.assertEqual(len(wf._items), 1)
         self.assertEqual(wf._items[0].title, CLEAR_CACHE['title'])
