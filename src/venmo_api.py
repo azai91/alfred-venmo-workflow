@@ -18,24 +18,18 @@ HELP_URL = 'https://github.com/azai91/alfred-venmo-workflow/issues'
 wf = Workflow(update_settings=UPDATE_SETTINGS, help_url=HELP_URL)
 
 class Venmo(object):
-    """
-    Venmo class to access Venmo API
-    """
+    """Venmo class to access Venmo API"""
 
     @classmethod
     def open_auth_page(cls):
-        """
-        Opens the authorization page
-        """
+        """Opens the authorization page"""
 
         cls.start_auth_server()
         subprocess.call(['open', AUTH_URL])
 
     @classmethod
     def start_auth_server(cls):
-        """
-        Starts server to capture code from redirect uri
-        """
+        """Starts server to capture code from redirect uri"""
 
         subprocess.Popen(['nohup', 'python', './server.py'])
 
@@ -77,18 +71,14 @@ class Venmo(object):
 
     @classmethod
     def delete_credentials(cls):
-        """
-        Deletes venmo access_token
-        """
+        """Deletes venmo access_token"""
 
         wf.delete_password('venmo_access_token')
         wf.delete_password('venmo_refresh_token')
 
     @classmethod
     def refresh(cls):
-        """
-        Refreshes tokens
-        """
+        """Refreshes tokens"""
 
         refresh_token = wf.get_password('venmo_refresh_token')
         response = requests.post(TOKEN_URL, {
@@ -110,7 +100,11 @@ class Venmo(object):
 
         access_token = wf.get_password('venmo_access_token')
         user = wf.stored_data('venmo_user')
-        response = requests.get(FRIENDS_URL % (user['username'], access_token)).json()
+        try:
+            response = requests.get(FRIENDS_URL % (user['username'], access_token)).json()
+        except:
+            cls.refresh_token()
+            response = requests.get(FRIENDS_URL % (user['username'], access_token)).json()
         return response['data']
 
     @classmethod
@@ -138,7 +132,7 @@ class Venmo(object):
         Display list of friends
 
         Args:
-
+            friends, list of friends to display
         """
 
         for friend in friends:
@@ -208,9 +202,7 @@ class Venmo(object):
 
     @classmethod
     def show_login(cls):
-        """
-        Display login option
-        """
+        """Display login option"""
 
         wf.add_item(title=LOGIN['title'],
                     arg=LOGIN['arg'],
@@ -220,9 +212,7 @@ class Venmo(object):
 
     @classmethod
     def show_logout(cls):
-        """
-        Display logout option
-        """
+        """Display logout option"""
 
         wf.add_item(title=LOGOUT['title'],
                     arg=LOGOUT['arg'],
@@ -232,9 +222,7 @@ class Venmo(object):
 
     @classmethod
     def show_clear_cache(cls):
-        """
-        Display clear cache option
-        """
+        """Display clear cache option"""
 
         wf.add_item(title=CLEAR_CACHE['title'],
                     arg=CLEAR_CACHE['arg'],
@@ -244,18 +232,14 @@ class Venmo(object):
 
     @classmethod
     def show_invalid_option(cls):
-        """
-        Display invalid option
-        """
+        """Display invalid option"""
 
         wf.add_item(title=INVALID['title'],
                     icon=ICON_WARNING)
 
     @classmethod
     def add_update(cls):
-        """
-        Display update option
-        """
+        """Display update option"""
 
         wf.add_item(
             'New version available!',
@@ -264,17 +248,13 @@ class Venmo(object):
 
     @classmethod
     def clear_cache(cls):
-        """
-        Clear cache
-        """
+        """Clear cache"""
 
         wf.clear_cache()
 
     @classmethod
     def set_cache_length(cls, length):
-        """
-        Set cache length
-        """
+        """Set cache length"""
 
         wf.store_data('venmo_cache_length', length)
 
