@@ -7,9 +7,16 @@ import unittest
 import src.requests as requests
 import time
 
-class TestVenmoAPI(unittest.TestCase):
+class TestServer(unittest.TestCase):
+    """
+    Test the authentication server
+    """
 
     def test_status(self):
+        """
+        Test if server can receive requests
+        """
+
         response = requests.get('http://127.0.0.1:1337')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(str(response.text), 'Error with setting code')
@@ -17,9 +24,8 @@ class TestVenmoAPI(unittest.TestCase):
         with self.assertRaises(requests.ConnectionError):
             response = requests.get('http://127.0.0.1:1337')
 
-
     def setUp(self):
-        subprocess.Popen(['nohup','python','./src/server.py'])
+        subprocess.Popen(['nohup', 'python', './src/server.py'])
 
         # allows server to start
         time.sleep(0.5)
