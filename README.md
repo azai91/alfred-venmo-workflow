@@ -3,7 +3,7 @@ This workflow allows you to easy pay or charge your friends. They keyword is "v"
 
 [Download](https://github.com/azai91/alfred-venmo-workflow/releases)
 
-<!-- ![inline](./assets/search.png) -->
+![inline](./assets/example.gif)
 
 ##Getting started
 
