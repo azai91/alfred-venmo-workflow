@@ -8,7 +8,7 @@ import requests
 import subprocess
 import json
 from config import CLIENT_ID, CLIENT_SECRET, AUTH_URL, TOKEN_URL, FRIENDS_URL, \
-                   CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID
+                   CACHE_MAX_AGE, PAYMENTS_URL, LOGOUT, LOGIN, CLEAR_CACHE, INVALID, INVALID_FORMAT
 from workflow import Workflow, ICON_WARNING
 import util
 
@@ -288,9 +288,12 @@ class Venmo(object):
         rest = user_input[len(friend_name):]
         rest = rest.strip().split(' ', 1)
 
-        if len(rest[0]) and rest[0] != '-' and not util.validate_amount(rest[0]):
-            wf.add_item(title='Please insert properly formatted amount')
-            return wf.send_feedback()
+        if len(rest[0]) and rest[0] != '-':
+            try:
+                util.validate_amount(rest[0])
+            except:
+                wf.add_item(title=INVALID_FORMAT['title'])
+                return wf.send_feedback()
 
         payload = util.generate_payload(rest, friend)
         title = util.format_title(payload, friend)

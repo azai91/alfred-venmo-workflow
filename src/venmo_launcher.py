@@ -26,10 +26,6 @@ def main(_):
     elif command == 'clear':
         Venmo.clear_cache()
         return sys.stdout.write("cache cleared")
-    elif command.startswith('set'):
-        length = int(command[3:])
-        Venmo.set_cache_length(length)
-        return sys.stdout.write("cache set to %s seconds" % str(length))
 
     try:
         Venmo.complete_transaction(command)

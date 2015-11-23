@@ -12,16 +12,13 @@ from src.venmo import main
 from src.venmo_api import wf
 
 class TestVenmo(unittest.TestCase):
-    """
-    Unit tests of venmo
-    """
+    """Unit tests of venmo"""
 
     def test_settings(self):
-        """
-        Test if settings are displayed properly
-        """
+        """Test if settings are displayed properly"""
 
         wf._items = []
+
         sys.argv = ['venmo.py', '>']
         main(None)
         self.assertEqual(len(wf._items), 3)
@@ -31,9 +28,8 @@ class TestVenmo(unittest.TestCase):
         wf._items = []
 
     def test_invalid_options(self):
-        """
-        Test if invalid option items is displayed
-        """
+        """Test if invalid option items is displayed"""
+
         wf._items = []
 
         sys.argv = ['venmo.py.py', '> not here']
@@ -45,9 +41,8 @@ class TestVenmo(unittest.TestCase):
         wf._items = []
 
     def test_login(self):
-        """
-        Test if login item is displayed
-        """
+        """Test if login item is displayed"""
+
         sys.argv = ['venmo.py.py', '> login']
         main(None)
         self.assertEqual(len(wf._items), 1)
@@ -89,9 +84,7 @@ class TestVenmo(unittest.TestCase):
         wf._items = []
 
     def test_logout(self):
-        """
-        Test if logout item is displayed properly
-        """
+        """Test if logout item is displayed properly"""
 
         wf._items = []
 
@@ -136,9 +129,7 @@ class TestVenmo(unittest.TestCase):
         wf._items = []
 
     def test_clear_cache(self):
-        """
-        Test if clear cache item is displayed properly
-        """
+        """Test if clear cache item is displayed properly"""
 
         wf._items = []
 

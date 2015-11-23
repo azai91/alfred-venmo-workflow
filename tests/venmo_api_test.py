@@ -9,7 +9,7 @@ from src.venmo_api import Venmo, wf
 import httpretty
 from src.config import TOKEN_URL
 from tests.sample_data import sample_friends, sample_user
-from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID
+from src.config import FRIENDS_URL, LOGIN, LOGOUT, CLEAR_CACHE, INVALID, INVALID_FORMAT
 import json
 import os
 import sys
@@ -20,9 +20,7 @@ Passwords = {}
 StoredData = {}
 
 class TestVenmoAPI(unittest.TestCase):
-    """
-    Unit tests for Venmo API
-    """
+    """Unit tests for Venmo API"""
 
     @httpretty.activate
     def test_get_friends(self):
@@ -151,6 +149,10 @@ class TestVenmoAPI(unittest.TestCase):
 
         Venmo.show_formatting('Andrew Kortina -11.0 test')
         self.assertEquals(wf._items[0].title, 'charge Andrew Kortina $11.00 for test')
+        wf._items = []
+
+        Venmo.show_formatting('Andrew Kortina food')
+        self.assertEquals(wf._items[0].title, INVALID_FORMAT['title'])
         wf._items = []
 
 

@@ -45,3 +45,7 @@ INVALID = {
     'title' : 'Invalid option',
     'icon' : ICON_WARNING
 }
+
+INVALID_FORMAT = {
+    'title' : 'Please insert properly formatted amount'
+}
