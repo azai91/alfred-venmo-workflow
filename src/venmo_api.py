@@ -77,7 +77,7 @@ class Venmo(object):
         wf.delete_password('venmo_refresh_token')
 
     @classmethod
-    def refresh(cls):
+    def refresh_token(cls):
         """Refreshes tokens"""
 
         refresh_token = wf.get_password('venmo_refresh_token')
