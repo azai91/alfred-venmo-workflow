@@ -6,8 +6,8 @@ Configurations and constants
 
 from workflow import ICON_ACCOUNT, ICON_EJECT, ICON_WARNING, ICON_SYNC
 
-CLIENT_ID = '3162'
-CLIENT_SECRET = 'h2EHtHaSGPX8dDxcVvJfFUsrNm8Jr63p'
+CLIENT_ID = '3307'
+CLIENT_SECRET = 'S686rq4AAGSXBbgwWJQ3CmhSsfUyFKnY'
 SCOPE = 'make_payments access_friends'
 REDIRECT_URI = 'http://127.0.0.1:1337'
 CACHE_MAX_AGE = 60 * 60 * 24 # one day
